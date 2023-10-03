@@ -1,5 +1,8 @@
 # Exercise2Grafkom
 
+`Keysa Anadea Aqiva Ajie (5025211028)`
+
+
 **2D Square from Two Triangle**              
 <img width="690" alt="Screen Shot 2023-10-03 at 07 28 16" src="https://github.com/keysanadea/GrafkomExercise2/assets/88714452/e922d968-2130-4b13-a1ee-db2d757726d9">
 
