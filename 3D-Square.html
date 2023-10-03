@@ -2,7 +2,7 @@
 <meta charset="UTF-8">
 <html>
 <head>
-<title>Kubus Menggunakan glMatrix dan WebGL</title>
+<title>Cube using WebGL</title>
 <style>
     body {
         background-color: #EEEEEE;
@@ -19,7 +19,7 @@
 <script type="x-shader/x-vertex" id="vshader-source">
     attribute vec3 a_coords;
     void main() {
-        vec4 coords = vec4(a_coords,1.0);
+        vec4 coords = vec4(a_coords, 1.0);
         gl_Position = coords;
     }
 </script>
@@ -35,7 +35,6 @@
         gl_FragColor = color;
     }
 </script>
-
 
 <script src="gl-matrix-min.js"></script>
 
@@ -59,44 +58,41 @@ let u_color;               // Location of the uniform specifying a color for the
  * location of a color uniform in the shader program, a_coords_loc is the location of
  * the coords attribute, and a_coords_buffer is a VBO for the coords attribute.
  */
-function drawPrimitive( primitiveType, color, vertices ) {
-     gl.enableVertexAttribArray(a_coords_loc);
-     gl.bindBuffer(gl.ARRAY_BUFFER,a_coords_buffer);
-     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STREAM_DRAW);
-     gl.uniform4fv(u_color, color);
-     gl.vertexAttribPointer(a_coords_loc, 3, gl.FLOAT, false, 0, 0);
-     gl.drawArrays(primitiveType, 0, vertices.length/3);
+function drawPrimitive(primitiveType, color, vertices) {
+    gl.enableVertexAttribArray(a_coords_loc);
+    gl.bindBuffer(gl.ARRAY_BUFFER, a_coords_buffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STREAM_DRAW);
+    gl.uniform4fv(u_color, color);
+    gl.vertexAttribPointer(a_coords_loc, 3, gl.FLOAT, false, 0, 0);
+    gl.drawArrays(primitiveType, 0, vertices.length / 3);
 }
-
 
 /* Draws a colored cube, along with a set of coordinate axes.
  * (Note that the use of the above drawPrimitive function is not an efficient
  * way to draw with WebGL.  Here, the geometry is so simple that it doesn't matter.)
  */
-function draw() { 
-    gl.clearColor(0,0,0,1);
+function draw() {
+    gl.clearColor(0, 0, 0, 1);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-    
+
     /* Draw the six faces of a cube, with different colors. */
-    
-    drawPrimitive( gl.TRIANGLE_FAN, [0,1,0,1], [ -0.2,-0.2,-0.5, -0.2,0.8,-0.5, 0.8,0.8,-0.5, 0.8,-0.2,-0.5 ]); // yang tampak 4,5,6,7
-    drawPrimitive( gl.TRIANGLE_FAN, [1,0,0,1], [ -0.5,-0.5,0.5, 0.5,-0.5,0.5, 0.5,0.5,0.5, -0.5,0.5,0.5 ]); // 0,3,2,1
-    drawPrimitive( gl.TRIANGLE_FAN, [0,0,1,1], [ -0.2,0.8,-0.5, -0.5,0.5,0.5, 0.5,0.5,0.5, 0.8,0.8,-0.5 ]); //5,1,2,6
-    drawPrimitive( gl.TRIANGLE_FAN, [1,1,0,1], [ -0.2,-0.2,-0.5, 0.8,-0.2,-0.5, 0.5,-0.5,0.5, -0.5,-0.5,0.5 ]); //4,7,3,0
-    drawPrimitive( gl.TRIANGLE_FAN, [1,0,1,1], [ 0.8,-0.2,-0.5, 0.8,0.8,-0.5, 0.5,0.5,0.5, 0.5,-0.5,0.5 ]); //7,6,2,3
-    drawPrimitive( gl.TRIANGLE_FAN, [0,1,1,1], [ -0.2,-0.2,-0.5, -0.5,-0.5,0.5, -0.5,0.5,0.5, -0.2,0.8,-0.5 ]); //4,0,1,5
 
+    drawPrimitive(gl.TRIANGLE_FAN, [0, 1, 0, 1], [-0.2, -0.2, -2.5, -0.2, 0.8, -2.5, 0.8, 0.8, -2.5, 0.8, -0.2, -2.5]); 
+    drawPrimitive(gl.TRIANGLE_FAN, [1, 0, 0, 1], [-0.5, -0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5]); 
+    drawPrimitive(gl.TRIANGLE_FAN, [0, 0, 1, 1], [-0.2, 0.8, -2.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.8, 0.8, -2.5]);
+    drawPrimitive(gl.TRIANGLE_FAN, [1, 1, 0, 1], [-0.2, -0.2, -2.5, 0.8, -0.2, -2.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5]); 
+    drawPrimitive(gl.TRIANGLE_FAN, [1, 0, 1, 1], [0.8, -0.2, -2.5, 0.8, 0.8, -2.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5]); 
+    drawPrimitive(gl.TRIANGLE_FAN, [0, 1, 1, 1], [-0.2, -0.2, -2.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.2, 0.8, -2.5]); 
 }
-
 
 /* Initialize the WebGL context.  Called from init() */
 function initGL() {
-    let prog = createProgram(gl,"vshader-source","fshader-source");
+    let prog = createProgram(gl, "vshader-source", "fshader-source");
     gl.useProgram(prog);
-    a_coords_loc =  gl.getAttribLocation(prog, "a_coords");
-    u_color =  gl.getUniformLocation(prog, "color");
+    a_coords_loc = gl.getAttribLocation(prog, "a_coords");
+    u_color = gl.getUniformLocation(prog, "color");
     a_coords_buffer = gl.createBuffer();
-    gl.enable(gl.DEPTH_TEST); //memastikan objek yang didepan kamera tidak tertumpuk
+    gl.enable(gl.DEPTH_TEST); 
 }
 
 /* Creates a program for use in the WebGL context gl, and returns the
@@ -109,10 +105,10 @@ function initGL() {
  * shaders.
  */
 function createProgram(gl, vertexShaderID, fragmentShaderID) {
-    function getTextContent( elementID ) {
-            // This nested function retrieves the text content of an
-            // element on the web page.  It is used here to get the shader
-            // source code from the script elements that contain it.
+    function getTextContent(elementID) {
+        // This nested function retrieves the text content of an
+        // element on the web page.  It is used here to get the shader
+        // source code from the script elements that contain it.
         let element = document.getElementById(elementID);
         let node = element.firstChild;
         let str = "";
@@ -125,35 +121,32 @@ function createProgram(gl, vertexShaderID, fragmentShaderID) {
     }
     let vertexShaderSource, fragmentShaderSource;
     try {
-        vertexShaderSource = getTextContent( vertexShaderID );
-        fragmentShaderSource = getTextContent( fragmentShaderID );
-    }
-    catch (e) {
+        vertexShaderSource = getTextContent(vertexShaderID);
+        fragmentShaderSource = getTextContent(fragmentShaderID);
+    } catch (e) {
         throw new Error("Error: Could not get shader source code from script elements.");
     }
-    let vsh = gl.createShader( gl.VERTEX_SHADER );
-    gl.shaderSource(vsh,vertexShaderSource);
+    let vsh = gl.createShader(gl.VERTEX_SHADER);
+    gl.shaderSource(vsh, vertexShaderSource);
     gl.compileShader(vsh);
-    if ( ! gl.getShaderParameter(vsh, gl.COMPILE_STATUS) ) {
+    if (!gl.getShaderParameter(vsh, gl.COMPILE_STATUS)) {
         throw new Error("Error in vertex shader:  " + gl.getShaderInfoLog(vsh));
-     }
-    let fsh = gl.createShader( gl.FRAGMENT_SHADER );
+    }
+    let fsh = gl.createShader(gl.FRAGMENT_SHADER);
     gl.shaderSource(fsh, fragmentShaderSource);
     gl.compileShader(fsh);
-    if ( ! gl.getShaderParameter(fsh, gl.COMPILE_STATUS) ) {
-       throw new Error("Error in fragment shader:  " + gl.getShaderInfoLog(fsh));
+    if (!gl.getShaderParameter(fsh, gl.COMPILE_STATUS)) {
+        throw new Error("Error in fragment shader:  " + gl.getShaderInfoLog(fsh));
     }
     let prog = gl.createProgram();
-    gl.attachShader(prog,vsh);
+    gl.attachShader(prog, vsh);
     gl.attachShader(prog, fsh);
     gl.linkProgram(prog);
-    if ( ! gl.getProgramParameter( prog, gl.LINK_STATUS) ) {
-       throw new Error("Link error in program:  " + gl.getProgramInfoLog(prog));
+    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
+        throw new Error("Link error in program:  " + gl.getProgramInfoLog(prog));
     }
     return prog;
 }
-
-
 
 /**
  * initialization function that will be called when the page has loaded
@@ -162,19 +155,17 @@ function init() {
     try {
         let canvas = document.getElementById("webglcanvas");
         gl = canvas.getContext("webgl");
-        if ( ! gl ) {
+        if (!gl) {
             throw "Browser does not support WebGL";
         }
-    }
-    catch (e) {
+    } catch (e) {
         document.getElementById("canvas-holder").innerHTML =
             "<p>Sorry, could not get a WebGL graphics context.</p>";
         return;
     }
     try {
         initGL();  // initialize the WebGL graphics context
-    }
-    catch (e) {
+    } catch (e) {
         document.getElementById("canvas-holder").innerHTML =
             "<p>Sorry, could not initialize the WebGL graphics context: " + e.message + "</p>";
         return;
@@ -183,14 +174,13 @@ function init() {
     draw();
 }
 
-
 window.onload = init;
 
 </script>
 </head>
 <body>
 
-<h2>Kubus dibuat dengan WebGL dan glMatrix</h2>
+<h2>This Cube made using WebGL and glMatrix</h2>
 
 <noscript><hr><h3>This page requires Javascript and a web browser that supports WebGL</h3><hr></noscript>
 
@@ -198,7 +188,5 @@ window.onload = init;
    <canvas width=600 height=600 id="webglcanvas"></canvas>
 </div>
 
-
 </body>
 </html>
-
